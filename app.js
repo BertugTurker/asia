@@ -82,26 +82,70 @@ const menu = [
   },
 ];
 
-const section = document.querySelector(".section-center");
-const btnContainer = document.querySelector(".btn-container");
+const section = document.querySelector(".section-center")
+const btnContainer = document.querySelector(".btn-container")
 
 let categories = menu.map(function(e) {
    return e.category    
 })
 let menuTemiz = ["All", ...new Set(categories)] 
 
-console.log(menuTemiz)
 
 const categoryList = () => {
   const categoryBtns = menuTemiz
     .map((category) => {
-      return `<button class="btn btn-outline-dark btn-item" data-id=${category}>${category}</button>`;
+      return `<button class="btn btn-outline-dark btn-item" data-id=${category}>${category}</button>`
+    }).join("")
+
+  btnContainer.innerHTML = categoryBtns
+}
+categoryList()
+
+const monu = (menuAl) => {
+  const menuListele = menuAl.map((yemek) => {
+      return `<div class="menu-items col-lg-6 col-sm-12">
+                  <img
+                     src=${yemek.img}
+                     alt=${yemek.title}
+                     class="photo"
+                   />
+                   <div class="menu-info">
+                     <div class="menu-title">
+                       <h4>${yemek.title}</h4>
+                       <h4 class="price">${yemek.price}</h4>
+                     </div>
+                     <div class="menu-text">
+                       ${yemek.desc}
+                     </div>
+                   </div>
+                 </div>`;
     }).join("");
 
-  btnContainer.innerHTML = categoryBtns;
+  section.innerHTML = menuListele;
   
 };
-categoryList()
+monu(menu)
+
+
+const filterBtns = document.querySelectorAll(".btn-item")
+filterBtns.forEach(function(diziElemanınınKendisi, diziElemanınınIndeksi, dizininKendisi) {
+  // Bir şeyler yap.
+  diziElemanınınKendisi.addEventListener("click", mutfak)
+  });
+
+function mutfak() {
+  if (this.getAttribute("data-id") === "All") {
+    monu(menu)
+  } else {
+    const butnCategory = menu.filter(function(yemegimiz) {
+      
+      return this.getAttribute("data-id") == yemegimiz.category
+  });
+  monu(butnCategory)
+}
+}
+
+
 
 
 

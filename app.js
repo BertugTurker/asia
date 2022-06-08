@@ -85,22 +85,24 @@ const menu = [
 const section = document.querySelector(".section-center")
 const btnContainer = document.querySelector(".btn-container")
 
+// array içindeki category isimlerinin aynı olanlarını temizleyip hepsinden birer tane olacak şekilde array oluşturuyoruz
 let categories = menu.map(function(e) {
    return e.category    
 })
 let menuTemiz = ["All", ...new Set(categories)] 
 
-
+// temiz arrayımızın her elemanını(kore,çin etc.) html'de buton koduna gömüp, data id olarak ekleyip indexe yolluyoruz
 const categoryList = () => {
   const categoryBtns = menuTemiz
     .map((category) => {
       return `<button class="btn btn-outline-dark btn-item" data-id=${category}>${category}</button>`
-    }).join("")
+    }).join("") // array elemanları arasındaki virgülü siliyoruz
 
   btnContainer.innerHTML = categoryBtns
 }
 categoryList()
 
+// verdiğimiz array'in itemlerini html kodunda section-center'ın içine eşliyoruz
 const monu = (menuAl) => {
   const menuListele = menuAl.map((yemek) => {
       return `<div class="menu-items col-lg-6 col-sm-12">
@@ -118,59 +120,27 @@ const monu = (menuAl) => {
                        ${yemek.desc}
                      </div>
                    </div>
-                 </div>`;
-    }).join("");
+                 </div>`
+    }).join("")
 
-  section.innerHTML = menuListele;
-  
-};
+  section.innerHTML = menuListele 
+}
 monu(menu)
 
-
-const filterBtns = document.querySelectorAll(".btn-item")
-filterBtns.forEach(function(diziElemanınınKendisi, diziElemanınınIndeksi, dizininKendisi) {
-  // Bir şeyler yap.
-  diziElemanınınKendisi.addEventListener("click", mutfak)
-  });
-
+// butonları dinleyip mutfak() çalıştırıyoruz
+const butonListen = document.querySelectorAll(".btn-item")
+butonListen.forEach(function(e) {
+  e.addEventListener("click", mutfak)
+  })
+// tıklanan butonun data id'si all ise monu fonksiyonunda "menu" arrayımızı çağırıyoruz
 function mutfak() {
   if (this.getAttribute("data-id") === "All") {
     monu(menu)
-  } else {
-    const butnCategory = menu.filter(function(yemegimiz) {
-      
-      return this.getAttribute("data-id") == yemegimiz.category
-  });
-  monu(butnCategory)
+  } else { // tıklanan butonun data id'si menu array'de category'si ile eşleşenleri monu() ile çağırıyoruz 
+    let kat = this.getAttribute("data-id")
+    const butCategory = menu.filter(function(yemegimiz) {
+      return kat == yemegimiz.category
+  })
+  monu(butCategory)
 }
 }
-
-
-
-
-
-// const menuList = (menuItems) => {
-//   let displayMenu = menuItems.map((item) => {
-//     return `<div class="menu-items col-lg-6 col-sm-12">
-//             <img
-//               src=${item.img}
-//               alt=${item.title}
-//               class="photo"
-//             />
-//             <div class="menu-info">
-//               <div class="menu-title">
-//                 <h4>${item.title}</h4>
-//                 <h4 class="price">${item.price}</h4>
-//               </div>
-//               <div class="menu-text">
-//                 ${item.desc}
-//               </div>
-//             </div>
-//           </div>
-//     `;
-//   });
-//   displayMenu = displayMenu.join("");
-//   section.innerHTML = displayMenu;
-// };
-
-// menuList(menu);
